@@ -4,7 +4,7 @@
 
 cap prog drop bumparea
 
-prog def bumparea, // sortpreserve
+prog def bumparea, sortpreserve
 version 15
 	
 syntax varlist(min=2 max=2) [if] [in], by(varname)  ///
@@ -107,15 +107,8 @@ preserve
 	// displace
 	replace _ylo = _ylo - _locmid
 	replace _yhi = _yhi - _locmid
-	
-	
-	// generate mid point
 	gen double _ymid = (_ylo + _yhi) / 2  	
 	
-
-	// interpolate between the dots
-	*** create space in the rows
-	*** for each x category, add 50 points
 
 	// get a generic sigmoid in place	
 	sort `by' `xvar'
@@ -304,3 +297,6 @@ end
 
 
 
+************************
+***** END OF FILE ******
+************************
