@@ -1,4 +1,4 @@
-*! bumpline v1.0: First release
+*! bumpline v1.0 (10 May 2023): First release
 *! Asjad Naqvi (asjadnaqvi@gmail.com, @AsjadNaqvi)
 
 
@@ -37,17 +37,14 @@ preserve
 	gettoken yvar xvar : varlist 
 	
 	drop if `yvar' == .
-	*gen double _x = `xvar'
 	egen _x = group(`xvar')
 
 	gsort `xvar' -`yvar'
 	by `xvar': gen _rank = _n	
 
-
 	bysort `by' : egen _minrank = min(_rank)
 
 	sort `xvar' _rank
-
 
 	summ _x, meanonly
 	local last = r(max)
@@ -127,7 +124,6 @@ preserve
 		
 	sort `by' `xvar' _seq
 	bysort _id: gen double _xnorm =  ((_n - 1) / (`newobs' - 1)) // scale from 0 to 1
-	*replace _xnorm = . if _seq==`=`newobs' + 1'
 
 	gen double _ynorm =  (1 / (1 + (_xnorm / (1 - _xnorm))^-`smooth'))
 
