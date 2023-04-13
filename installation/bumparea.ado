@@ -276,7 +276,7 @@ preserve
 		(scatter _ymid `xvar' if _taglast==1, mlabel(_blab) mlabpos(3) mlabsize(`labsize') mc(none) mlabgap(1.5)) ///
 		`areas' ///
 		, ///
-		`title' `note' `subtitle' `xsize' `ysize' ///
+		`title' `note' `subtitle' `xsize' `ysize' `name' ///
 		xlabel(`xlist', labsize(`xlabsize') angle(`xlabangle')) ///
 		ylabel(`ymin' `ymax', nolabels noticks nogrid) ///
 		yscale(noline) ///
