@@ -1,7 +1,7 @@
 {smcl}
-{* 10Apr2023}{...}
+{* 28May2023}{...}
 {hi:help bumparea}{...}
-{right:{browse "https://github.com/asjadnaqvi/stata-bumparea":bumparea v1.0 (GitHub)}}
+{right:{browse "https://github.com/asjadnaqvi/stata-bumparea":bumparea v1.1 (GitHub)}}
 
 {hline}
 
@@ -28,7 +28,7 @@ The options are described as follows:
 {p2coldent : {opt bumparea y x, by(group)}}The command requires a numeric {it:y} variable and a numeric {it:x} variable. The x variable is usually a time variable.
 The {opt by()} variable defines the groupings.{p_end}
 
-{p2coldent : {opt top(num)}}The number of rows to show in the graph. The default option is {top(10)}. Non {opt top()} values are grouped in an "Others" category.{p_end}
+{p2coldent : {opt top(num)}}The number of rows to show in the graph. The default option is {opt top(50)}. Non {opt top()} values are grouped in an "Others" category.{p_end}
 
 {p2coldent : {opt dropo:ther}}Drop the "Others" category from the graph and just show the {opt top()} categories.{p_end}
 
@@ -88,8 +88,8 @@ See {browse "https://github.com/asjadnaqvi/stata-bumparea":GitHub}.
 
 {title:Package details}
 
-Version      : {bf:bumparea} v1.0
-This release : 10 Apr 2023
+Version      : {bf:bumparea} v1.1
+This release : 28 May 2023
 First release: 10 Apr 2023
 Repository   : {browse "https://github.com/asjadnaqvi/stata-bumparea":GitHub}
 Keywords     : Stata, graph, bump chart, ribbon plot

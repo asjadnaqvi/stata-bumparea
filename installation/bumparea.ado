@@ -1,6 +1,8 @@
-*! bumpline v1.0 (10 May 2023): First release
-*! Asjad Naqvi (asjadnaqvi@gmail.com, @AsjadNaqvi)
+*! bumparea v1.1 (28 May 2023):
+*! Asjad Naqvi (asjadnaqvi@gmail.com)
 
+*v1.1 (28 May 2023): Minor code cleanups. if/in added. duplicates check added.
+*v1.0 (10 May 2023): First release
 
 cap prog drop bumparea
 
@@ -8,7 +10,7 @@ prog def bumparea, sortpreserve
 version 15
 	
 syntax varlist(min=2 max=2) [if] [in], by(varname)  ///
-	[ top(real 10) DROPOther smooth(real 4) palette(string) alpha(real 80) offset(real 15) RECENter(string) ] ///
+	[ top(real 20) DROPOther smooth(real 4) palette(string) alpha(real 80) offset(real 15) RECENter(string) ] ///
 	[ format(string) percent LWidth(string) LColor(string) ] ///
 	[ LABSize(string) XLABSize(string) XLABAngle(string) ] ///
 	[ xtitle(passthru) title(passthru) subtitle(passthru) note(passthru) ] ///
@@ -28,11 +30,17 @@ syntax varlist(min=2 max=2) [if] [in], by(varname)  ///
 		exit
 	}	
 	
+	marksample touse, strok	
 
 qui {	
 preserve	
 
+	keep if `touse'
+
 	keep `varlist' `by'
+
+	isid `varlist' `by'
+
 
 	gettoken yvar xvar : varlist 
 	

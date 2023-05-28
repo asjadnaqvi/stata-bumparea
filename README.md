@@ -7,7 +7,7 @@
 
 ---
 
-# bumparea v1.0
+# bumparea v1.1
 
 ## Installation
 
@@ -19,7 +19,7 @@ SSC (**v1.0**)::
 ssc install bumparea, replace
 ```
 
-GitHub (**v1.0**):
+GitHub (**v1.1**):
 
 ```
 net install bumparea, from("https://raw.githubusercontent.com/asjadnaqvi/stata-bumparea/main/installation/") replace
@@ -54,7 +54,7 @@ graph set window fontface "Arial Narrow"
 
 ## Syntax
 
-The syntax for **v1.0** is as follows:
+The syntax for **v1.1** is as follows:
 
 ```
 
@@ -98,7 +98,7 @@ bumparea total_ghg year, by(country)
 
 
 ```
-bumparea total_ghg year, by(country) ///
+bumparea total_ghg year, by(country) top(10) ///
 	xsize(2) ysize(1) 
 ```
 
@@ -107,7 +107,7 @@ bumparea total_ghg year, by(country) ///
 
 ### percent
 ```
-bumparea total_ghg year, by(country) ///
+bumparea total_ghg year, by(country) top(10) ///
 	percent labs(2) xsize(2) ysize(1) 	
 ```
 
@@ -116,14 +116,14 @@ bumparea total_ghg year, by(country) ///
 ### dropother
 
 ```
-bumparea total_ghg year, by(country) ///
+bumparea total_ghg year, by(country) top(10) ///
 	dropother labs(2) xsize(2) ysize(1) 
 ```
 
 <img src="/figures/bumparea4.png" height="400">
 
 ```
-bumparea total_ghg year, by(country) ///
+bumparea total_ghg year, by(country) top(10) ///
 	dropother percent labs(2) xsize(2) ysize(1) 	
 ```
 
@@ -139,14 +139,14 @@ bumparea total_ghg year, by(country) ///
 ### smooth
 
 ```
-bumparea total_ghg year, by(country) ///
+bumparea total_ghg year, by(country) top(10) ///
 	smooth(1) dropother labs(2) xsize(2) ysize(1) 	
 ```
 
 <img src="/figures/bumparea7.png" height="400">
 
 ```
-bumparea total_ghg year, by(country) ///
+bumparea total_ghg year, by(country) top(10) ///
 	smooth(8) dropother labs(2) xsize(2) ysize(1) 	
 ```
 
@@ -155,14 +155,14 @@ bumparea total_ghg year, by(country) ///
 ### recenter
 
 ```
-bumparea total_ghg year, by(country) ///
+bumparea total_ghg year, by(country) top(10) ///
 	recenter(top) dropother labs(2) xsize(2) ysize(1) 	
 ```
 
 <img src="/figures/bumparea9.png" height="400">
 
 ```
-bumparea total_ghg year, by(country) ///
+bumparea total_ghg year, by(country) top(10) ///
 	recenter(bot) dropother labs(2) xsize(2) ysize(1) 		
 ```
 
@@ -173,7 +173,7 @@ bumparea total_ghg year, by(country) ///
 ### alpha and lines
 
 ```
-bumparea total_ghg year, by(country) ///
+bumparea total_ghg year, by(country) top(10) ///
 	lc(black) lw(0.03) dropother labs(2) xsize(2) ysize(1) 	
 ```
 
@@ -182,28 +182,28 @@ bumparea total_ghg year, by(country) ///
 ### colors
 
 ```
-bumparea total_ghg year, by(country) ///
+bumparea total_ghg year, by(country) top(10) ///
 	lc(black) lw(0.03) palette(reds, reverse) dropother labs(2) xsize(2) ysize(1) 	
 ```
 
 <img src="/figures/bumparea12.png" height="400">
 
 ```
-bumparea total_ghg year, by(country) ///
+bumparea total_ghg year, by(country) top(10) ///
 	lc(black) lw(0.03) palette(viridis) dropother labs(2) xsize(2) ysize(1) 
 ```
 
 <img src="/figures/bumparea13.png" height="400">
 
 ```
-bumparea total_ghg year, by(country) ///
+bumparea total_ghg year, by(country) top(10) ///
 	lc(black) lw(0.03) palette(CET C6) alpha(100) dropother labs(2) xsize(2) ysize(1) 			
 ```
 
 <img src="/figures/bumparea14.png" height="400">
 
 ```	
-bumparea total_ghg year, by(country) ///
+bumparea total_ghg year, by(country) top(10) ///
 	lc(black) lw(0.03) palette(CET C6) alpha(50) dropother labs(2) xsize(2) ysize(1) 		
 ```
 
@@ -246,6 +246,11 @@ Please open an [issue](https://github.com/asjadnaqvi/stata-bumparea/issues) to r
 
 
 ## Change log
+
+**v1.1 (28 May 2023)**
+- Fixed `if` and `in` conditions that were not passing correctly.
+- Added checks for duplicates.
+- Minor code cleanups, updates to defaults, and help file.
 
 **v1.0 (10 Apr 2023)**
 - Public release.
