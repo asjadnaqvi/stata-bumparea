@@ -1,4 +1,6 @@
 
+![bumparea-1](https://github.com/asjadnaqvi/stata-bumparea/assets/38498046/08bed45f-5c89-4047-bad8-cd6892690b98)
+
 ![StataMin](https://img.shields.io/badge/stata-2015-blue) ![issues](https://img.shields.io/github/issues/asjadnaqvi/stata-bumparea) ![license](https://img.shields.io/github/license/asjadnaqvi/stata-bumparea) ![Stars](https://img.shields.io/github/stars/asjadnaqvi/stata-bumparea) ![version](https://img.shields.io/github/v/release/asjadnaqvi/stata-bumparea) ![release](https://img.shields.io/github/release-date/asjadnaqvi/stata-bumparea)
 
 ---
