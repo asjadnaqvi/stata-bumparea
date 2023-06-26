@@ -57,7 +57,7 @@ graph set window fontface "Arial Narrow"
 
 ## Syntax
 
-The syntax for **v1.1** is as follows:
+The syntax for **v1.11** is as follows:
 
 ```
 
@@ -249,6 +249,9 @@ Please open an [issue](https://github.com/asjadnaqvi/stata-bumparea/issues) to r
 
 
 ## Change log
+
+**v1.11 (06 Jun 2023)**
+- Minor bug fixes, checks, enhancements. 
 
 **v1.1 (28 May 2023)**
 - Fixed `if` and `in` conditions that were not passing correctly.
