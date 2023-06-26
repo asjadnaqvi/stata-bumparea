@@ -1,7 +1,7 @@
 {smcl}
-{* 28May2023}{...}
+{* 06Jun2023}{...}
 {hi:help bumparea}{...}
-{right:{browse "https://github.com/asjadnaqvi/stata-bumparea":bumparea v1.1 (GitHub)}}
+{right:{browse "https://github.com/asjadnaqvi/stata-bumparea":bumparea v1.11 (GitHub)}}
 
 {hline}
 
@@ -88,8 +88,8 @@ See {browse "https://github.com/asjadnaqvi/stata-bumparea":GitHub}.
 
 {title:Package details}
 
-Version      : {bf:bumparea} v1.1
-This release : 28 May 2023
+Version      : {bf:bumparea} v1.11
+This release : 26 Jun 2023
 First release: 10 Apr 2023
 Repository   : {browse "https://github.com/asjadnaqvi/stata-bumparea":GitHub}
 Keywords     : Stata, graph, bump chart, ribbon plot

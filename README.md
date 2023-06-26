@@ -9,8 +9,8 @@
 
 ---
 
-# bumparea v1.1
-(28 May 2023)
+# bumparea v1.11
+(06 Jun 2023)
 
 ## Installation
 
@@ -22,7 +22,7 @@ SSC (**v1.1**):
 ssc install bumparea, replace
 ```
 
-GitHub (**v1.1**):
+GitHub (**v1.11**):
 
 ```
 net install bumparea, from("https://raw.githubusercontent.com/asjadnaqvi/stata-bumparea/main/installation/") replace

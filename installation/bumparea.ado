@@ -1,15 +1,16 @@
-*! bumparea v1.1 (28 May 2023):
+*! bumparea v1.11 (26 Jun 2023):
 *! Asjad Naqvi (asjadnaqvi@gmail.com)
 
-*v1.1 (28 May 2023): Minor code cleanups. if/in added. duplicates check added.
-*v1.0 (10 May 2023): First release
+*v1.11 (26 Jun 2023): Minor bug fixes + additional checks
+*v1.1  (28 May 2023): Minor code cleanups. if/in added. duplicates check added.
+*v1.0  (10 May 2023): First release
 
 cap prog drop bumparea
 
 prog def bumparea, sortpreserve
 version 15
 	
-syntax varlist(min=2 max=2) [if] [in], by(varname)  ///
+syntax varlist(min=2 max=2 numeric) [if] [in], by(varname)  ///
 	[ top(real 20) DROPOther smooth(real 4) palette(string) alpha(real 80) offset(real 15) RECENter(string) ] ///
 	[ format(string) percent LWidth(string) LColor(string) ] ///
 	[ LABSize(string) XLABSize(string) XLABAngle(string) ] ///
@@ -96,7 +97,7 @@ preserve
 	// recenter
 
 	if "`recenter'" == "" | "`recenter'"=="middle"  | "`recenter'"=="mid"  | "`recenter'"=="m" {
-		bysort year: egen double _locmid = max(_yhi)
+		bysort `xvar': egen double _locmid = max(_yhi)
 		replace _locmid = _locmid / 2
 
 	}
@@ -106,7 +107,7 @@ preserve
 	}	
 	
 	if "`recenter'" == "top" | "`recenter'"=="t"  {
-		bysort year: egen double _locmid  =   max(_yhi)
+		bysort `xvar': egen double _locmid  =   max(_yhi)
 	}		
 
 	// displace
