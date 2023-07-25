@@ -1,6 +1,7 @@
-*! bumparea v1.11 (26 Jun 2023):
+*! bumparea v1.2 (25 Jul 2023)
 *! Asjad Naqvi (asjadnaqvi@gmail.com)
 
+*v1.2  (25 Jul 2023): Bug fixed on labels. Better checks for by() variable. colorby(name), colorother(), colorvar() added.
 *v1.11 (26 Jun 2023): Minor bug fixes + additional checks
 *v1.1  (28 May 2023): Minor code cleanups. if/in added. duplicates check added.
 *v1.0  (10 May 2023): First release
@@ -15,21 +16,33 @@ syntax varlist(min=2 max=2 numeric) [if] [in], by(varname)  ///
 	[ format(string) percent LWidth(string) LColor(string) ] ///
 	[ LABSize(string) XLABSize(string) XLABAngle(string) ] ///
 	[ xtitle(passthru) title(passthru) subtitle(passthru) note(passthru) ] ///
-	[ scheme(passthru) name(passthru) xsize(passthru) ysize(passthru)  ] 
+	[ scheme(passthru) name(passthru) xsize(passthru) ysize(passthru)  ] ///
+	[ saving(passthru) colorby(name) COLOther(string) colorvar(varname numeric) ]  // v1.2
 	
 	
 	// check dependencies
 	capture findfile colorpalette.ado
 	if _rc != 0 {
 		display as error "colorpalette package is missing. Install the {stata ssc install colorpalette, replace:colorpalette} and {stata ssc install colrspace, replace:colrspace} packages."
-		exit
+		exit 198
 	}
 	
 	capture findfile labmask.ado
 	if _rc != 0 {
 		qui ssc install labutil, replace
-		exit
 	}	
+	
+	if "`colorby'"!="" & "`colorvar'"!="" {
+		display as error "Both colorby() and colorvar() cannot be specified."
+		exit 198
+	}	
+	
+	if "`colorby'"!="name" & "`colorby'"!="" {
+		display as error "The valid option is colorby(name)."
+		exit 198
+	}	
+	
+	
 	
 	marksample touse, strok	
 
@@ -37,13 +50,48 @@ qui {
 preserve	
 
 	keep if `touse'
+	
+	local colcheck = 1
+	
+	if "`colorvar'"=="" {
+			
+			local colcheck = 0
+			
+			gen _color = 1
+			local colorvar _color
+	}
 
-	keep `varlist' `by'
+	keep `varlist' `by' `colorvar'
 
-	isid `varlist' `by'
-
-
+	
+	
+	
 	gettoken yvar xvar : varlist 
+
+	isid `xvar' `by'
+
+	cap confirm numeric var `by'
+		if _rc!=0 {
+			tempvar over2
+			encode `by', gen(`over2')
+			local by `over2' 
+		}
+		else {
+			tempvar tempov over2
+			egen   `over2' = group(`by')
+			
+			if "`: value label `by''" != "" {
+				decode `by', gen(`tempov')		
+				labmask `over2', val(`tempov')
+			}
+			local by `over2' 
+		}	
+		
+	gen temp = `by'	
+	
+
+	decode `by', gen(_label)
+	
 	
 	drop if `yvar' == .
 	egen _x = group(`xvar')
@@ -56,31 +104,41 @@ preserve
 	sort `xvar' _rank
 
 	summ _x, meanonly
-	local last = r(max)
-
-	gen _mark = 1 if _rank <= `top' & _x==`last'
+		local last = r(max)
+		gen _mark = 1 if _rank <= `top' & _x==`last'
 
 	bysort `by': egen _maxlast = max(_mark)
 	
-
+	
+	
+	
 	if "`dropother'" == "" {
 		
 		replace _maxlast = 2 if _maxlast==.
-		replace `by' = "Others" if _maxlast==2
+		replace _label = "Others" if _maxlast==2
 		replace _rank = . if _maxlast==2
+		replace `by'   = . if _maxlast==2
 		
-		collapse (sum) `yvar' (mean) _rank _x, by(`xvar' `by')
+		collapse (sum) `yvar' (mean) _rank _x `colorvar', by(`xvar' `by' _label)
 		
 		summ _rank
 		replace _rank = r(max) + 1 if _rank==.
+		
+		summ `by'
+		replace `by' =  r(max) + 1 if  `by'==.
 	}
 	else {
 		keep if _maxlast==1 // keep top X
 	}
 
+
+	summ `colorvar' , meanonly
+	replace `colorvar' = r(max) + 1 if `colorvar'==.
+	
 	
 	egen _group = group(`by')
 
+	
 	// reverse the ranks
 	summ _rank, meanonly
 	gen _rankrev = r(max) + 1 - _rank
@@ -123,14 +181,12 @@ preserve
 	
 	local points = 50
 	local newobs = `points'		
-	*expand `=`newobs' + 1'
-	expand `newobs' //, gen(mark)
+	expand `newobs' 
 	bysort _id: gen _seq = _n
 	
 	
 
 	*** for the sigmoid box
-		
 	sort `by' `xvar' _seq
 	bysort _id: gen double _xnorm =  ((_n - 1) / (`newobs' - 1)) // scale from 0 to 1
 
@@ -148,7 +204,7 @@ preserve
 	local items = r(r) - 1
 	
 	
-	gen double _xval = .  // _xnorm + `xvar'
+	gen double _xval   = .  
 	gen double _yvallo = .
 	gen double _yvalhi = .
 	
@@ -161,7 +217,10 @@ preserve
 	sort _group `xvar' _seq
 	levelsof _group, local(grp)
 	
+
 	forval i = 1/`items' {
+		
+		di "`i'|
 		
 		local j = `i' + 1		
 		foreach y of local grp {  // y
@@ -194,6 +253,9 @@ preserve
 		}
 	}
 	
+	replace _ranklast = `top' + 1 if _label=="Others"
+	
+	
 	
 	if "`lwidth'" == "" local lwidth 0.2
 	if "`lcolor'" == "" local lcolor white
@@ -209,18 +271,54 @@ preserve
 	levelsof _ranklast, local(lvls)
 	local items = r(r)
 
+
+	if "`colorby'"=="name" {
+		local colvar _group 
+	}
+	else {
+		local colvar _ranklast
+	}
+	
 	local counter = 1
 	
 	foreach i of local lvls {
 		
-		colorpalette `palette', nograph n(`items') `poptions'
+		if `colcheck'==0 {
+			
+			colorpalette `palette', nograph n(`items') `poptions'
 
-		local areas `areas' (rarea _yvalhi _yvallo _xval if _ranklast==`i', fi(100) fc("`r(p`counter')'%`alpha'") lc(`lcolor') lw(`lwidth'))
+			local areas `areas' (rarea _yvalhi _yvallo _xval if `colvar'==`i', fi(100) fc("`r(p`counter')'%`alpha'") lc(`lcolor') lw(`lwidth')) 
 	
-	
-		local counter = `counter' + 1
+			local counter = `counter' + 1
+		
+		}
+		else {
+			
+			summ `colorvar', meanonly
+			local items2 = r(max)
+					
+			summ `colorvar' if `colvar'==`i', meanonly
+			local index = r(mean)
+			
+			colorpalette `palette', nograph n(`items2') `poptions'
+			
+			local areas `areas' (rarea _yvalhi _yvallo _xval if `colvar'==`i', fi(100) fc("`r(p`index')'%`alpha'") lc(`lcolor') lw(`lwidth')) 
+		
+		}
 	}
 
+
+	if "`dropother'"=="" {
+		
+		if "`colother'" == "" local colother gs12
+		
+		summ `colvar', meanonly
+		local lastcor = r(max)
+	
+		local areas `areas' (rarea _yvalhi _yvallo _xval if `colvar'==`lastcor', fi(100) fc("`colother'%`alpha'") lc(`lcolor') lw(`lwidth'))
+	
+	}
+	
 	
 	// control the x axis
 	summ `xvar', meanonly
@@ -260,23 +358,24 @@ preserve
 	}
 	
 	
-		if "`percent'" == "" {
-			gen labnum = " (" + string(`yvar', "`format'") + ")" if _taglast==1
-		}
-		else {
-			summ `yvar' if _taglast==1, meanonly
-			gen labnum = " (" + string((`yvar'/`r(sum)')* 100, "`format'") + "%)" if _taglast==1
-		}	
+	if "`percent'" == "" {
+		gen labnum = " (" + string(`yvar', "`format'") + ")" if _taglast==1
+	}
+	else {
+		summ `yvar' if _taglast==1, meanonly
+		gen labnum = " (" + string((`yvar'/`r(sum)')* 100, "`format'") + "%)" if _taglast==1
+	}	
 	
 	
-	gen _blab = `by' + labnum if _taglast==1
+	gen _blab = _label + labnum if _taglast==1
+
 	
-	
-	if "`labsize'" == "" local labsize 2.8
-	if "`xlabsize'" == "" local xlabsize 2.5
-	if "`ylabsize'" == "" local ylabsize 2.5
+	if "`labsize'"   == "" local labsize   2.8
+	if "`xlabsize'"  == "" local xlabsize  2.5
+	if "`ylabsize'"  == "" local ylabsize  2.5
 	if "`xlabangle'" == "" local xlabangle 0
 	
+
 	levelsof `xvar'
 	local xlist = "`r(levels)'"
 	
@@ -285,7 +384,7 @@ preserve
 		(scatter _ymid `xvar' if _taglast==1, mlabel(_blab) mlabpos(3) mlabsize(`labsize') mc(none) mlabgap(1.5)) ///
 		`areas' ///
 		, ///
-		`title' `note' `subtitle' `xsize' `ysize' `name' ///
+		`title' `note' `subtitle' `xsize' `ysize' `name' `saving' ///
 		xlabel(`xlist', labsize(`xlabsize') angle(`xlabangle')) ///
 		ylabel(`ymin' `ymax', nolabels noticks nogrid) ///
 		yscale(noline) ///

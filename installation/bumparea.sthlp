@@ -1,7 +1,7 @@
 {smcl}
-{* 06Jun2023}{...}
+{* 25Jul2023}{...}
 {hi:help bumparea}{...}
-{right:{browse "https://github.com/asjadnaqvi/stata-bumparea":bumparea v1.11 (GitHub)}}
+{right:{browse "https://github.com/asjadnaqvi/stata-bumparea":bumparea v1.2 (GitHub)}}
 
 {hline}
 
@@ -12,10 +12,10 @@
 {p 8 15 2}
 
 {cmd:bumparea} {it:y x} {ifin}, {cmd:by}(varname) 
-		{cmd:[} {cmd:top}({it:num}) {cmdab:dropo:ther} {cmd:smooth}({it:num}) {cmd:palette}({it:str}) {cmd:labcond}({it:str}) {cmd:offset}({it:num})
-		  {cmd:alpha}({it:num}) {cmdab:lc:olor}({it:str}) {cmdab:lw:idth}({it:str}) {cmd:percent} {cmd:format}({it:fmt}) {cmdab:rec:enter}(mid|top|bot)
+		{cmd:[} {cmd:top}({it:num}) {cmdab:dropo:ther} {cmd:smooth}({it:num}) {cmd:palette}({it:str}) {cmd:labcond}({it:str}) {cmd:offset}({it:num}) {cmd:alpha}({it:num}) 
+		  {cmdab:lc:olor}({it:str}) {cmdab:lw:idth}({it:str}) {cmd:percent} {cmd:format}({it:fmt}) {cmdab:rec:enter}(mid|top|bot) {cmd:colorby}({it:name}) {cmd:colorvar}({it:var}) {cmdab:colo:ther}({it:str})
 		  {cmd:xlabel}({it:str}) {cmd:xtitle}({it:str}) {cmd:ytitle}({it:str}) {cmd:title}({it:str}) {cmd:subtitle}({it:str}) {cmd:note}({it:str}) 
-		  {cmd:ysize}({it:num}) {cmd:xsize}({it:num}) {cmd:scheme}({it:str}) {cmd:name}({it:str}) {cmd:]}
+		  {cmd:ysize}({it:num}) {cmd:xsize}({it:num}) {cmd:scheme}({it:str}) {cmd:name}({it:str}) {cmd:saving}({it:str}) {cmd:]}
 
 
 {p 4 4 2}
@@ -36,6 +36,15 @@ The {opt by()} variable defines the groupings.{p_end}
 while a value of 8 shows almost vertical jumps.{p_end}
 
 {p2coldent : {opt palette(str)}}Color name is any named scheme defined in the {stata help colorpalette:colorpalette} package. Default is {stata colorpalette tableau:{it:tableau}}.{p_end}
+
+{p2coldent : {opt colorby(name)}}Color by alphabetical values. This option is still beta and only takes only one argument. This option is highly useful when
+making several bumparea plots for comparison to assign the same color to the same {opt by()} category. Otherwise, the color order is determined by the rank
+order.{p_end}
+
+{p2coldent : {opt colorvar(var)}}Color by a predefined variable. Define a color variable that takes on values in increments of one. This is to fully control and customize the 
+colors assigned.{p_end}
+
+{p2coldent : {opt colo:ther(var)}}Color of the other category. Default is {opt colo(gs12)}}.{p_end}
 
 {p2coldent : {opt alpha(num)}}The transparency of area fills. The default is {opt alpha(80)} for 80% transparency.{p_end}
 
@@ -60,7 +69,7 @@ or {opt rec:enter(bottom)}. For brevity, the following can be specified: {it:mid
 
 {p2coldent : {opt xtitle, ytitle, xsize, ysize}}These are standard twoway graph options.{p_end}
 
-{p2coldent : {opt title, subtitle, note, name}}These are standard twoway graph options.{p_end}
+{p2coldent : {opt title, subtitle, note, name, saving}}These are standard twoway graph options.{p_end}
 
 {p2coldent : {opt scheme(string)}}Load the custom scheme. Above options can be used to fine tune individual elements.{p_end}
 
@@ -83,13 +92,11 @@ See {browse "https://github.com/asjadnaqvi/stata-bumparea":GitHub}.
 
 {hline}
 
-{title:Acknowledgements}
-
 
 {title:Package details}
 
-Version      : {bf:bumparea} v1.11
-This release : 26 Jun 2023
+Version      : {bf:bumparea} v1.2
+This release : 25 Jul 2023
 First release: 10 Apr 2023
 Repository   : {browse "https://github.com/asjadnaqvi/stata-bumparea":GitHub}
 Keywords     : Stata, graph, bump chart, ribbon plot

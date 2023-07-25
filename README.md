@@ -9,7 +9,7 @@
 
 ---
 
-# bumparea v1.11
+# bumparea v1.2
 (06 Jun 2023)
 
 ## Installation
@@ -22,7 +22,7 @@ SSC (**v1.1**):
 ssc install bumparea, replace
 ```
 
-GitHub (**v1.11**):
+GitHub (**v1.2**):
 
 ```
 net install bumparea, from("https://raw.githubusercontent.com/asjadnaqvi/stata-bumparea/main/installation/") replace
@@ -57,15 +57,14 @@ graph set window fontface "Arial Narrow"
 
 ## Syntax
 
-The syntax for **v1.11** is as follows:
+The syntax for **v1.2** is as follows:
 
-```
-
+```stata
 bumparea y x [if] [in], by(varname) 
-                [ top(num) dropother smooth(num) palette(str) labcond(str) offset(num)
-                  alpha(num) lcolor(str) lwidth(str) percent format(fmt) recenter(mid|top|bot)
+                [ top(num) dropother smooth(num) palette(str) labcond(str) offset(num) alpha(num) 
+                  lcolor(str) lwidth(str) percent format(fmt) recenter(mid|top|bot) colorby(name) colorvar(var) colother(str)
                   xlabel(str) xtitle(str) ytitle(str) title(str) subtitle(str) note(str) 
-                  ysize(num) xsize(num) scheme(str) name(str) ]
+                  ysize(num) xsize(num) scheme(str) name(str) saving(str) ]
 ```
 
 See the help file `help bumparea` for details.
@@ -242,6 +241,43 @@ bumparea total_ghg year, by(country) smooth(8) palette(CET L08) labs(2) ///
 <img src="/figures/bumparea17.png" height="400">
 
 
+### v1.2 options 
+
+```
+bumparea total_ghg year, by(country) top(10) ///
+			xsize(2) ysize(1) 		
+```
+
+<img src="/figures/bumparea18.png" height="400">
+
+```
+bumparea total_ghg year, by(country) top(10) colother(gs12) ///
+			xsize(2) ysize(1) 		
+```
+
+<img src="/figures/bumparea19.png" height="400">
+
+```
+bumparea total_ghg year, by(country) top(10) colorby(name) ///
+			xsize(2) ysize(1		
+```
+
+<img src="/figures/bumparea20.png" height="400">
+
+```
+cap drop cats
+gen cats = .
+replace cats = 1 if inlist(country, "Indonesia", "Japan")
+replace cats = 2 if inlist(country, "United States", "Canada")
+replace cats = 3 if inlist(country, "Iran", "Saudi Arabia")
+replace cats = 4 if inlist(country, "China")
+			
+bumparea total_ghg year, by(country) top(10) colorvar(cats) ///
+			xsize(2) ysize(1) colo(white)			
+```
+
+<img src="/figures/bumparea21.png" height="400">
+
 
 ## Feedback
 
@@ -249,6 +285,13 @@ Please open an [issue](https://github.com/asjadnaqvi/stata-bumparea/issues) to r
 
 
 ## Change log
+
+**v1.2 (25 Jul 2023)**
+- Several new options added: `colorby(name)` to alpha sort the colors, `colorby(var)` to color using a custom `var`, `colother()` to define the color of the "Other" category.
+- A bug with labels fixed (found by Marc Kaulisch)
+- Better checks for `by()` variables.
+- `saving()` option added. 
+- Several small bug fixes and code optimizations.
 
 **v1.11 (06 Jun 2023)**
 - Minor bug fixes, checks, enhancements. 

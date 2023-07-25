@@ -1,7 +1,7 @@
-v 1.11
+v 1.2
 d BUMPAREA: A Stata package for bump area or ribbon plots.
 d  
-d Distribution-Date: 20230626
+d Distribution-Date: 20230724
 d
 d Asjad Naqvi
 d asjadnaqvi@gmail.com
