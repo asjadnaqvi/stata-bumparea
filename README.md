@@ -251,7 +251,7 @@ bumparea total_ghg year, by(country) top(10) ///
 <img src="/figures/bumparea18.png" height="400">
 
 ```
-bumparea total_ghg year, by(country) top(10) colother(gs12) ///
+bumparea total_ghg year, by(country) top(10) colother(gs6) ///
 			xsize(2) ysize(1) 		
 ```
 
