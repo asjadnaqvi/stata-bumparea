@@ -1,4 +1,4 @@
-v 1.2
+v 1.21
 d {bf:BUMPAREA}: A Stata package for bump area charts or ribbon plots.
 d
 d KW: Stata
@@ -6,7 +6,7 @@ d KW: graphs
 d KW: bump area
 d KW: ribbon plot
 d
-d Distribution-Date: 20230725
+d Distribution-Date: 20240115
 d License: MIT
 d
 d Author: Asjad Naqvi

@@ -1,6 +1,7 @@
-*! bumparea v1.2 (25 Jul 2023)
+*! bumparea v1.21 (15 Jan 2024)
 *! Asjad Naqvi (asjadnaqvi@gmail.com)
 
+*v1.21 (15 Jan 2024): minor cleanups, updates to defaults  
 *v1.2  (25 Jul 2023): Bug fixed on labels. Better checks for by() variable. colorby(name), colorother(), colorvar() added.
 *v1.11 (26 Jun 2023): Minor bug fixes + additional checks
 *v1.1  (28 May 2023): Minor code cleanups. if/in added. duplicates check added.
@@ -12,7 +13,7 @@ prog def bumparea, sortpreserve
 version 15
 	
 syntax varlist(min=2 max=2 numeric) [if] [in], by(varname)  ///
-	[ top(real 20) DROPOther smooth(real 4) palette(string) alpha(real 80) offset(real 15) RECENter(string) ] ///
+	[ top(real 10) DROPOther smooth(real 4) palette(string) alpha(real 80) offset(real 15) RECENter(string) ] ///
 	[ format(string) percent LWidth(string) LColor(string) ] ///
 	[ LABSize(string) XLABSize(string) XLABAngle(string) ] ///
 	[ xtitle(passthru) title(passthru) subtitle(passthru) note(passthru) ] ///
@@ -23,7 +24,7 @@ syntax varlist(min=2 max=2 numeric) [if] [in], by(varname)  ///
 	// check dependencies
 	capture findfile colorpalette.ado
 	if _rc != 0 {
-		display as error "colorpalette package is missing. Install the {stata ssc install colorpalette, replace:colorpalette} and {stata ssc install colrspace, replace:colrspace} packages."
+		display as error "The {bf:palettes} package is missing. Install the {stata ssc install palettes, replace:palettes} and {stata ssc install colrspace, replace:colrspace} packages."
 		exit 198
 	}
 	

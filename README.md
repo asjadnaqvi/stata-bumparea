@@ -9,8 +9,8 @@
 
 ---
 
-# bumparea v1.2
-(06 Jun 2023)
+# bumparea v1.21
+(15 Jan 2024)
 
 ## Installation
 
@@ -22,7 +22,7 @@ SSC (**v1.2**):
 ssc install bumparea, replace
 ```
 
-GitHub (**v1.2**):
+GitHub (**v1.21**):
 
 ```
 net install bumparea, from("https://raw.githubusercontent.com/asjadnaqvi/stata-bumparea/main/installation/") replace
@@ -57,7 +57,7 @@ graph set window fontface "Arial Narrow"
 
 ## Syntax
 
-The syntax for **v1.2** is as follows:
+The syntax for the latest version is as follows:
 
 ```stata
 bumparea y x [if] [in], by(varname) 
@@ -285,6 +285,10 @@ Please open an [issue](https://github.com/asjadnaqvi/stata-bumparea/issues) to r
 
 
 ## Change log
+
+**v1.21 (15 Jan 2024)**
+- Minor fixes.
+- Updates to defaults.
 
 **v1.2 (25 Jul 2023)**
 - Several new options added: `colorby(name)` to alpha sort the colors, `colorby(var)` to color using a custom `var`, `colother()` to define the color of the "Other" category.
