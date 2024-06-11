@@ -5,12 +5,12 @@
 
 ---
 
-[Installation](#Installation) | [Syntax](#Syntax) | [Examples](#Examples) | [Feedback](#Feedback) | [Change log](#Change-log)
+[Installation](#Installation) | [Syntax](#Syntax) | [Citation guidelines](#Citation-guidelines) | [Examples](#Examples) | [Feedback](#Feedback) | [Change log](#Change-log)
 
 ---
 
-# bumparea v1.21
-(15 Jan 2024)
+# bumparea v1.31
+(11 Jun 2024)
 
 ## Installation
 
@@ -22,7 +22,7 @@ SSC (**v1.21**):
 ssc install bumparea, replace
 ```
 
-GitHub (**v1.21**):
+GitHub (**v1.31**):
 
 ```
 net install bumparea, from("https://raw.githubusercontent.com/asjadnaqvi/stata-bumparea/main/installation/") replace
@@ -76,6 +76,31 @@ bumparea y x, by(group)
 ```
 
 where `y` is a numerical variable we want to plot and `x` is the time dimension. Both need to be numeric. The `by()` is the category variable.
+
+
+## Citation guidelines
+Software packages take countless hours of programming, testing, and bug fixing. If you use this package, then a citation would be highly appreciated. Suggested citations:
+
+*in BibTeX*
+
+```
+@software{bumparea,
+   author = {Naqvi, Asjad},
+   title = {Stata package ``bumparea''},
+   url = {https://github.com/asjadnaqvi/stata-bumparea},
+   version = {1.31},
+   date = {2024-06-11}
+}
+```
+
+*or simple text*
+
+```
+Naqvi, A. (2024). Stata package "streamplot" version 1.82. Release date 10 June 2024. https://github.com/asjadnaqvi/stata-streamplot.
+```
+
+
+*or see [SSC citation](https://ideas.repec.org/c/boc/bocode/s459060.html) (updated once a new version is submitted)*
 
 
 
@@ -285,6 +310,13 @@ Please open an [issue](https://github.com/asjadnaqvi/stata-bumparea/issues) to r
 
 
 ## Change log
+
+**v1.31 (11 June 2024)**
+- Added `wrap()` to wrap labels.
+- Several code updates.
+
+**v1.3 (26 May 2024)**
+- The command now sums and fills missing categories.
 
 **v1.21 (15 Jan 2024)**
 - Minor fixes.

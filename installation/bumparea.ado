@@ -1,6 +1,8 @@
-*! bumparea v1.21 (15 Jan 2024)
+*! bumparea v1.31 (11 Jun 2024)
 *! Asjad Naqvi (asjadnaqvi@gmail.com)
 
+*v1.31 (11 Jun 2024): added wrap() for label wraps
+*v1.3  (26 May 2024): added collapse, fillin.
 *v1.21 (15 Jan 2024): minor cleanups, updates to defaults  
 *v1.2  (25 Jul 2023): Bug fixed on labels. Better checks for by() variable. colorby(name), colorother(), colorvar() added.
 *v1.11 (26 Jun 2023): Minor bug fixes + additional checks
@@ -16,9 +18,8 @@ syntax varlist(min=2 max=2 numeric) [if] [in], by(varname)  ///
 	[ top(real 10) DROPOther smooth(real 4) palette(string) alpha(real 80) offset(real 15) RECENter(string) ] ///
 	[ format(string) percent LWidth(string) LColor(string) ] ///
 	[ LABSize(string) XLABSize(string) XLABAngle(string) ] ///
-	[ xtitle(passthru) title(passthru) subtitle(passthru) note(passthru) ] ///
-	[ scheme(passthru) name(passthru) xsize(passthru) ysize(passthru)  ] ///
-	[ saving(passthru) colorby(name) COLOther(string) colorvar(varname numeric) ]  // v1.2
+	[ saving(passthru) colorby(name) COLOther(string) colorvar(varname numeric) wrap(numlist >=0 max=1) ] /// // v1.2
+	[ * ] 
 	
 	
 	// check dependencies
@@ -64,12 +65,15 @@ preserve
 
 	keep `varlist' `by' `colorvar'
 
-	
-	
-	
 	gettoken yvar xvar : varlist 
 
-	isid `xvar' `by'
+
+	collapse (sum) `yvar' (mean) `colorvar' , by(`by' `xvar')
+	
+	fillin `by' `xvar'
+	recode `yvar' ( 0 = .)	
+	drop _fillin
+	
 
 	cap confirm numeric var `by'
 		if _rc!=0 {
@@ -367,9 +371,23 @@ preserve
 		gen labnum = " (" + string((`yvar'/`r(sum)')* 100, "`format'") + "%)" if _taglast==1
 	}	
 	
-	
+
 	gen _blab = _label + labnum if _taglast==1
 
+	if "`wrap'" != "" {
+		gen _length = length(_blab) if _blab!= ""
+		summ _length, meanonly		
+		local _wraprounds = floor(`r(max)' / `wrap')
+		
+		forval i = 1 / `_wraprounds' {
+			local wraptag = `wrap' * `i'
+			replace _blab = substr(_blab, 1, `wraptag') + "`=char(10)'" + substr(_blab, `=`wraptag' + 1', .) if _length > `wraptag' & _blab!= ""
+		}
+		
+		drop _length
+	}		
+	
+	
 	
 	if "`labsize'"   == "" local labsize   2.8
 	if "`xlabsize'"  == "" local xlabsize  2.5
@@ -385,12 +403,11 @@ preserve
 		(scatter _ymid `xvar' if _taglast==1, mlabel(_blab) mlabpos(3) mlabsize(`labsize') mc(none) mlabgap(1.5)) ///
 		`areas' ///
 		, ///
-		`title' `note' `subtitle' `xsize' `ysize' `name' `saving' ///
 		xlabel(`xlist', labsize(`xlabsize') angle(`xlabangle')) ///
 		ylabel(`ymin' `ymax', nolabels noticks nogrid) ///
 		yscale(noline) ///
 		xscale(noline range(`xrmin' `xrmax')) ///
-		legend(off) 
+		legend(off) `options' 
 		
 	*/
 	

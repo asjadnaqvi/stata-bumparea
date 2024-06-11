@@ -1,7 +1,7 @@
 {smcl}
-{* 15Jan2024}{...}
+{* 11Jun2024}{...}
 {hi:help bumparea}{...}
-{right:{browse "https://github.com/asjadnaqvi/stata-bumparea":bumparea v1.21 (GitHub)}}
+{right:{browse "https://github.com/asjadnaqvi/stata-bumparea":bumparea v1.31 (GitHub)}}
 
 {hline}
 
@@ -13,9 +13,9 @@
 
 {cmd:bumparea} {it:y x} {ifin}, {cmd:by}(varname) 
 		{cmd:[} {cmd:top}({it:num}) {cmdab:dropo:ther} {cmd:smooth}({it:num}) {cmd:palette}({it:str}) {cmd:labcond}({it:str}) {cmd:offset}({it:num}) {cmd:alpha}({it:num}) 
-		  {cmdab:lc:olor}({it:str}) {cmdab:lw:idth}({it:str}) {cmd:percent} {cmd:format}({it:fmt}) {cmdab:rec:enter}(mid|top|bot) {cmd:colorby}({it:name}) {cmd:colorvar}({it:var}) {cmdab:colo:ther}({it:str})
-		  {cmd:xlabel}({it:str}) {cmd:xtitle}({it:str}) {cmd:ytitle}({it:str}) {cmd:title}({it:str}) {cmd:subtitle}({it:str}) {cmd:note}({it:str}) 
-		  {cmd:ysize}({it:num}) {cmd:xsize}({it:num}) {cmd:scheme}({it:str}) {cmd:name}({it:str}) {cmd:saving}({it:str}) {cmd:]}
+		  {cmdab:lc:olor}({it:str}) {cmdab:lw:idth}({it:str}) {cmd:percent} {cmd:format}({it:fmt}) {cmdab:rec:enter}(mid|top|bot) {cmd:colorby}({it:name}) 
+          {cmd:colorvar}({it:var}) {cmdab:colo:ther}({it:str}) {cmd:wrap}({it:num}) *
+        {cmd:]}
 
 
 {p 4 4 2}
@@ -61,17 +61,15 @@ or {opt rec:enter(bottom)}. For brevity, the following can be specified: {it:mid
 
 {p2coldent : {opt lc:olor(str)}}The line color of the area stroke. The default is {opt lc(white)}.{p_end}
 
+{p2coldent : {opt wrap(num)}}Wrap the labels after a number of characters. For example, {opt wrap(50)} will wrap labels every 50 characters.{p_end}
+
 {p2coldent : {opt labs:ize(str)}}Size of the {opt by()} category labels. Default value is {opt labs(2.8)}.{p_end}
 
 {p2coldent : {opt xlabs:ize(str)}}Size of the x-axis labels. Default value is {opt xlabs(2.5)}.{p_end}
 
 {p2coldent : {opt xlaba:ngle(str)}}Angle of the x-axis labels. Default is {opt xlaba(0)} for zero degrees or horizontal orientation.{p_end}
 
-{p2coldent : {opt xtitle, ytitle, xsize, ysize}}These are standard twoway graph options.{p_end}
-
-{p2coldent : {opt title, subtitle, note, name, saving}}These are standard twoway graph options.{p_end}
-
-{p2coldent : {opt scheme(string)}}Load the custom scheme. Above options can be used to fine tune individual elements.{p_end}
+{p2coldent : {opt *}}All other standard twoway options.{p_end}
 
 {synoptline}
 {p2colreset}{...}
@@ -95,8 +93,8 @@ See {browse "https://github.com/asjadnaqvi/stata-bumparea":GitHub}.
 
 {title:Package details}
 
-Version      : {bf:bumparea} v1.21
-This release : 15 Jan 2024
+Version      : {bf:bumparea} v1.31
+This release : 11 Jun 2024
 First release: 10 Apr 2023
 Repository   : {browse "https://github.com/asjadnaqvi/stata-bumparea":GitHub}
 Keywords     : Stata, graph, bump chart, ribbon plot
@@ -109,7 +107,23 @@ Twitter      : {browse "https://twitter.com/AsjadNaqvi":@AsjadNaqvi}
 
 {title:Feedback}
 
-Please submit bugs, errors, feature requests on {browse "https://github.com/asjadnaqvi/stata-alluvial/issues":GitHub} by opening a new issue.
+Please submit bugs, errors, feature requests on {browse "https://github.com/asjadnaqvi/stata-bumparea/issues":GitHub} by opening a new issue.
+
+
+{title:Citation guidelines}
+
+Suggested citation guidlines for this package:
+
+Naqvi, A. (2024). Stata package "bumparea" version 1.31. Release date 11 June 2024. https://github.com/asjadnaqvi/stata-bumparea.
+
+@software{bumparea,
+   author = {Naqvi, Asjad},
+   title = {Stata package ``bumparea''},
+   url = {https://github.com/asjadnaqvi/stata-bumparea},
+   version = {1.31},
+   date = {2024-06-11}
+}
+
 
 {title:References}
 
@@ -122,4 +136,6 @@ Please submit bugs, errors, feature requests on {browse "https://github.com/asja
 
 {psee}
     {helpb arcplot}, {helpb alluvial}, {helpb bimap}, {helpb bumparea}, {helpb bumpline}, {helpb circlebar}, {helpb circlepack}, {helpb clipgeo}, {helpb delaunay}, {helpb joyplot}, 
-	{helpb marimekko}, {helpb sankey}, {helpb schemepack}, {helpb spider}, {helpb streamplot}, {helpb sunburst}, {helpb treecluster}, {helpb treemap}
+	{helpb marimekko}, {helpb polarspike}, {helpb sankey}, {helpb schemepack}, {helpb spider}, {helpb streamplot}, {helpb sunburst}, {helpb treecluster}, {helpb treemap}, {helpb waffle}
+	
+or visit {browse "https://github.com/asjadnaqvi":GitHub} for detailed documentation and examples.		
