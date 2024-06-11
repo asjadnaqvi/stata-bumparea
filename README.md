@@ -100,7 +100,7 @@ Naqvi, A. (2024). Stata package "streamplot" version 1.82. Release date 10 June 
 ```
 
 
-*or see [SSC citation](https://ideas.repec.org/c/boc/bocode/s459060.html) (updated once a new version is submitted)*
+*or see [SSC citation](https://ideas.repec.org/c/boc/bocode/s459196.html) (updated once a new version is submitted)*
 
 
 
