@@ -96,7 +96,7 @@ Software packages take countless hours of programming, testing, and bug fixing. 
 *or simple text*
 
 ```
-Naqvi, A. (2024). Stata package "streamplot" version 1.82. Release date 10 June 2024. https://github.com/asjadnaqvi/stata-streamplot.
+Naqvi, A. (2024). Stata package "bumparea" version 1.31. Release date 11 June 2024. https://github.com/asjadnaqvi/stata-bumparea.
 ```
 
 
