@@ -1,16 +1,15 @@
 
-![bumparea-1](https://github.com/asjadnaqvi/stata-bumparea/assets/38498046/08bed45f-5c89-4047-bad8-cd6892690b98)
-
 ![StataMin](https://img.shields.io/badge/stata-2015-blue) ![issues](https://img.shields.io/github/issues/asjadnaqvi/stata-bumparea) ![license](https://img.shields.io/github/license/asjadnaqvi/stata-bumparea) ![Stars](https://img.shields.io/github/stars/asjadnaqvi/stata-bumparea) ![version](https://img.shields.io/github/v/release/asjadnaqvi/stata-bumparea) ![release](https://img.shields.io/github/release-date/asjadnaqvi/stata-bumparea)
-
----
 
 [Installation](#Installation) | [Syntax](#Syntax) | [Citation guidelines](#Citation-guidelines) | [Examples](#Examples) | [Feedback](#Feedback) | [Change log](#Change-log)
 
 ---
 
-# bumparea v1.31
-(11 Jun 2024)
+
+![bumparea-1](https://github.com/asjadnaqvi/stata-bumparea/assets/38498046/08bed45f-5c89-4047-bad8-cd6892690b98)
+
+# bumparea v1.4
+(21 Oct 2024)
 
 ## Installation
 
@@ -22,19 +21,18 @@ SSC (**v1.31**):
 ssc install bumparea, replace
 ```
 
-GitHub (**v1.31**):
+GitHub (**v1.4**):
 
 ```
 net install bumparea, from("https://raw.githubusercontent.com/asjadnaqvi/stata-bumparea/main/installation/") replace
 ```
 
-
-
-The `palettes` package is required to run this command:
+The following packages are required for this command:
 
 ```
 ssc install palettes, replace
 ssc install colrspace, replace
+ssc install graphfunctions, replace
 ```
 
 Even if you have these packages installed, please check for updates: `ado update, update`.
@@ -46,7 +44,6 @@ ssc install schemepack, replace
 set scheme white_tableau  
 ```
 
-You can also push the scheme directly into the graph using the `scheme(schemename)` option. See the help file for details or the example below.
 
 I also prefer narrow fonts in figures with long labels. You can change this as follows:
 
@@ -60,11 +57,10 @@ graph set window fontface "Arial Narrow"
 The syntax for the latest version is as follows:
 
 ```stata
-bumparea y x [if] [in], by(varname) 
-                [ top(num) dropother smooth(num) palette(str) labcond(str) offset(num) alpha(num) 
-                  lcolor(str) lwidth(str) percent format(fmt) recenter(mid|top|bot) colorby(name) colorvar(var) colother(str)
-                  xlabel(str) xtitle(str) ytitle(str) title(str) subtitle(str) note(str) 
-                  ysize(num) xsize(num) scheme(str) name(str) saving(str) ]
+bumparea y x [if] [in] [weight], by(varname) 
+        [ top(num) dropother smooth(num) palette(str) labcond(str) offset(num) alpha(num) 
+          lcolor(str) lwidth(str) percent format(fmt) recenter(mid|top|bot) colorby(name) colorvar(var) colother(str) 
+          wrap(num) labsize(str) labcolor(str) labangle(str) labgap(str) labprop  labscale(num) * ]
 ```
 
 See the help file `help bumparea` for details.
@@ -88,15 +84,15 @@ Software packages take countless hours of programming, testing, and bug fixing. 
    author = {Naqvi, Asjad},
    title = {Stata package ``bumparea''},
    url = {https://github.com/asjadnaqvi/stata-bumparea},
-   version = {1.31},
-   date = {2024-06-11}
+   version = {1.4},
+   date = {2024-10-21}
 }
 ```
 
 *or simple text*
 
 ```
-Naqvi, A. (2024). Stata package "bumparea" version 1.31. Release date 11 June 2024. https://github.com/asjadnaqvi/stata-bumparea.
+Naqvi, A. (2024). Stata package "bumparea" version 1.4. Release date 21 October 2024. https://github.com/asjadnaqvi/stata-bumparea.
 ```
 
 
@@ -121,7 +117,7 @@ Let's test the `bumparea` command:
 bumparea total_ghg year, by(country) 
 ```
 
-<img src="/figures/bumparea1.png" height="400">
+<img src="/figures/bumparea1.png" width="100%">
 
 
 ```
@@ -129,7 +125,7 @@ bumparea total_ghg year, by(country) top(10) ///
 	xsize(2) ysize(1) 
 ```
 
-<img src="/figures/bumparea2.png" height="400">
+<img src="/figures/bumparea2.png" width="100%">
 
 
 ### percent
@@ -138,7 +134,7 @@ bumparea total_ghg year, by(country) top(10) ///
 	percent labs(2) xsize(2) ysize(1) 	
 ```
 
-<img src="/figures/bumparea3.png" height="400">
+<img src="/figures/bumparea3.png" width="100%">
 
 ### dropother
 
@@ -147,21 +143,21 @@ bumparea total_ghg year, by(country) top(10) ///
 	dropother labs(2) xsize(2) ysize(1) 
 ```
 
-<img src="/figures/bumparea4.png" height="400">
+<img src="/figures/bumparea4.png" width="100%">
 
 ```
 bumparea total_ghg year, by(country) top(10) ///
 	dropother percent labs(2) xsize(2) ysize(1) 	
 ```
 
-<img src="/figures/bumparea5.png" height="400">
+<img src="/figures/bumparea5.png" width="100%">
 
 ```
 bumparea total_ghg year, by(country) ///
 	top(12) dropother labs(2) xsize(2) ysize(1) 
 ```
 
-<img src="/figures/bumparea6.png" height="400">
+<img src="/figures/bumparea6.png" width="100%">
 
 ### smooth
 
@@ -170,14 +166,14 @@ bumparea total_ghg year, by(country) top(10) ///
 	smooth(1) dropother labs(2) xsize(2) ysize(1) 	
 ```
 
-<img src="/figures/bumparea7.png" height="400">
+<img src="/figures/bumparea7.png" width="100%">
 
 ```
 bumparea total_ghg year, by(country) top(10) ///
 	smooth(8) dropother labs(2) xsize(2) ysize(1) 	
 ```
 
-<img src="/figures/bumparea8.png" height="400">
+<img src="/figures/bumparea8.png" width="100%">
 
 ### recenter
 
@@ -186,14 +182,14 @@ bumparea total_ghg year, by(country) top(10) ///
 	recenter(top) dropother labs(2) xsize(2) ysize(1) 	
 ```
 
-<img src="/figures/bumparea9.png" height="400">
+<img src="/figures/bumparea9.png" width="100%">
 
 ```
 bumparea total_ghg year, by(country) top(10) ///
 	recenter(bot) dropother labs(2) xsize(2) ysize(1) 		
 ```
 
-<img src="/figures/bumparea10.png" height="400">
+<img src="/figures/bumparea10.png" width="100%">
 
 
 
@@ -204,7 +200,7 @@ bumparea total_ghg year, by(country) top(10) ///
 	lc(black) lw(0.03) dropother labs(2) xsize(2) ysize(1) 	
 ```
 
-<img src="/figures/bumparea11.png" height="400">
+<img src="/figures/bumparea11.png" width="100%">
 
 ### colors
 
@@ -213,40 +209,40 @@ bumparea total_ghg year, by(country) top(10) ///
 	lc(black) lw(0.03) palette(reds, reverse) dropother labs(2) xsize(2) ysize(1) 	
 ```
 
-<img src="/figures/bumparea12.png" height="400">
+<img src="/figures/bumparea12.png" width="100%">
 
 ```
 bumparea total_ghg year, by(country) top(10) ///
 	lc(black) lw(0.03) palette(viridis) dropother labs(2) xsize(2) ysize(1) 
 ```
 
-<img src="/figures/bumparea13.png" height="400">
+<img src="/figures/bumparea13.png" width="100%">
 
 ```
 bumparea total_ghg year, by(country) top(10) ///
 	lc(black) lw(0.03) palette(CET C6) alpha(100) dropother labs(2) xsize(2) ysize(1) 			
 ```
 
-<img src="/figures/bumparea14.png" height="400">
+<img src="/figures/bumparea14.png" width="100%">
 
 ```	
 bumparea total_ghg year, by(country) top(10) ///
 	lc(black) lw(0.03) palette(CET C6) alpha(50) dropother labs(2) xsize(2) ysize(1) 		
 ```
 
-<img src="/figures/bumparea15.png" height="400">
+<img src="/figures/bumparea15.png" width="100%">
 
 ### all together
 
 ```
 bumparea total_ghg year, by(country) smooth(6) palette(CET L20) labs(2) ///
-	top(10) dropother recenter(mid) alpha(90) lw(0.15) xlaba(45) ///
+	top(10) dropother recenter(mid) alpha(90) lw(0.15) xlabel(1990(1)2019, angle(45)) ///
 	title("Top 10 countries by annual GHG emissions", size(6)) ///
 			note("Source: OWID.") ///
 			xsize(2) ysize(1) 
 ```
 
-<img src="/figures/bumparea16.png" height="400">
+<img src="/figures/bumparea16.png" width="100%">
 
 
 ### custom x axis
@@ -257,13 +253,13 @@ drop if iso_code==""
 keep if inlist(year, 1990, 1993, 1997, 2000, 2005, 2007, 2010, 2014, 2017, 2019)
 
 bumparea total_ghg year, by(country) smooth(8) palette(CET L08) labs(2) ///
-	top(15) dropother recenter(mid) alpha(80) lw(0.1) xlaba(45) ///
+	top(15) dropother recenter(mid) alpha(80) lw(0.1) xlabel(1990(1)2019, angle(45)) ///
 	title("Top 10 countries by annual GHG emissions", size(6)) ///
 			note("Source: OWID. bumparea package. @AsjadNaqvi") ///
 			xsize(2) ysize(1)
 ```
 
-<img src="/figures/bumparea17.png" height="400">
+<img src="/figures/bumparea17.png" width="100%">
 
 
 ### v1.2 options 
@@ -273,21 +269,21 @@ bumparea total_ghg year, by(country) top(10) ///
 			xsize(2) ysize(1) 		
 ```
 
-<img src="/figures/bumparea18.png" height="400">
+<img src="/figures/bumparea18.png" width="100%">
 
 ```
 bumparea total_ghg year, by(country) top(10) colother(gs6) ///
 			xsize(2) ysize(1) 		
 ```
 
-<img src="/figures/bumparea19.png" height="400">
+<img src="/figures/bumparea19.png" width="100%">
 
 ```
 bumparea total_ghg year, by(country) top(10) colorby(name) ///
 			xsize(2) ysize(1		
 ```
 
-<img src="/figures/bumparea20.png" height="400">
+<img src="/figures/bumparea20.png" width="100%">
 
 ```
 cap drop cats
@@ -301,7 +297,26 @@ bumparea total_ghg year, by(country) top(10) colorvar(cats) ///
 			xsize(2) ysize(1) colo(white)			
 ```
 
-<img src="/figures/bumparea21.png" height="400">
+<img src="/figures/bumparea21.png" width="100%">
+
+
+
+### v1.4 options 
+
+
+```
+bumparea total_ghg year, by(country) top(10) dropother xsize(2) ysize(1) format(%8.1f) offset(10) labprop labc(red) laba(45) ///
+		xlabel(1990(1)2019, labsize(2) angle(45) )	
+```
+
+<img src="/figures/bumparea22.png" width="100%">
+
+```
+bumparea total_ghg year [aw = gdp], by(country) top(10) dropother xsize(2) ysize(1) format(%10.0fc) offset(10) labprop  ///
+		xlabel(1990(1)2018, labsize(2) angle(90) )
+```
+
+<img src="/figures/bumparea23.png" width="100%">
 
 
 ## Feedback
@@ -311,7 +326,15 @@ Please open an [issue](https://github.com/asjadnaqvi/stata-bumparea/issues) to r
 
 ## Change log
 
-**v1.31 (11 June 2024)**
+**v1.4 (21 Oct 2024)**
+- Weights are supported.
+- `wrap()` ported to `graphfunctions`.
+- All x-axis options removed. Use standard `xlabel()` syntax.
+- Added `labgap()`, `labcolor()`, `labangle()` for more flexiblity with ribbon labels.
+- Added `labprop` for proportional labels. Can be rescaled using `labscale()`.
+- Several bug fixes.
+
+**v1.31 (11 Jun 2024)**
 - Added `wrap()` to wrap labels.
 - Several code updates.
 

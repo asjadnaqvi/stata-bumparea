@@ -3,6 +3,6 @@ authors:
 - family-names: "Naqvi"
   given-names: "Asjad"
 title: "Stata package ``bumparea''"
-version: 1.31
-date-released: 2024-10-11
+version: 1.4
+date-released: 2024-10-21
 url: "https://github.com/asjadnaqvi/stata-bumparea"

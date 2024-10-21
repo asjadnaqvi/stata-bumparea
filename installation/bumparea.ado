@@ -1,6 +1,7 @@
-*! bumparea v1.31 (11 Jun 2024)
+*! bumparea v1.4 (21 Oct 2024)
 *! Asjad Naqvi (asjadnaqvi@gmail.com)
 
+*v1.4 (21 Oct 2024): several bug fixes. weights added. wrap updated. xlabel() is fully pass through. labgap(), labc(), labangle() added.
 *v1.31 (11 Jun 2024): added wrap() for label wraps
 *v1.3  (26 May 2024): added collapse, fillin.
 *v1.21 (15 Jan 2024): minor cleanups, updates to defaults  
@@ -14,12 +15,12 @@ cap prog drop bumparea
 prog def bumparea, sortpreserve
 version 15
 	
-syntax varlist(min=2 max=2 numeric) [if] [in], by(varname)  ///
+syntax varlist(min=2 max=2 numeric) [if] [in] [aw fw pw iw/], by(varname)  ///
 	[ top(real 10) DROPOther smooth(real 4) palette(string) alpha(real 80) offset(real 15) RECENter(string) ] ///
 	[ format(string) percent LWidth(string) LColor(string) ] ///
-	[ LABSize(string) XLABSize(string) XLABAngle(string) ] ///
-	[ saving(passthru) colorby(name) COLOther(string) colorvar(varname numeric) wrap(numlist >=0 max=1) ] /// // v1.2
-	[ * ] 
+	[ LABSize(string) ] ///
+	[ saving(passthru) colorby(name) COLOther(string) colorvar(varname numeric)  ] /// // v1.2
+	[ stat(string) wrap(numlist >0 max=1) * labprop labscale(real 0.33333) labgap(string) LABColor(string) LABAngle(string) ] // v1.4
 	
 	
 	// check dependencies
@@ -30,9 +31,11 @@ syntax varlist(min=2 max=2 numeric) [if] [in], by(varname)  ///
 	}
 	
 	capture findfile labmask.ado
-	if _rc != 0 {
-		qui ssc install labutil, replace
-	}	
+	if _rc != 0 qui ssc install labutil, replace	
+	
+	cap findfile labsplit.ado
+		if _rc != 0 quietly ssc install graphfunctions, replace		
+	
 	
 	if "`colorby'"!="" & "`colorvar'"!="" {
 		display as error "Both colorby() and colorvar() cannot be specified."
@@ -44,11 +47,16 @@ syntax varlist(min=2 max=2 numeric) [if] [in], by(varname)  ///
 		exit 198
 	}	
 	
+	if "`stat'" != "" & !inlist("`stat'", "mean", "sum") {
+		display as error "Valid options are {bf:stat(mean)} [default] or {bf:stat(sum)}."
+		exit
+	}		
+	
 	
 	
 	marksample touse, strok	
 
-qui {	
+quietly {	
 preserve	
 
 	keep if `touse'
@@ -63,40 +71,44 @@ preserve
 			local colorvar _color
 	}
 
-	keep `varlist' `by' `colorvar'
+	keep `varlist' `by' `colorvar' `exp'
 
 	gettoken yvar xvar : varlist 
 
+	
+	if "`stat'" == "" local stat sum
+	
+	if "`weight'" != "" local myweight  [`weight' = `exp']	
 
-	collapse (sum) `yvar' (mean) `colorvar' , by(`by' `xvar')
+	collapse (`stat') `yvar' (first) `colorvar' `myweight', by(`by' `xvar')
 	
 	fillin `by' `xvar'
-	recode `yvar' ( 0 = .)	
+	recode `yvar' (0=.)	
 	drop _fillin
 	
 
 	cap confirm numeric var `by'
-		if _rc!=0 {
-			tempvar over2
-			encode `by', gen(`over2')
-			local by `over2' 
+		if _rc!=0 {  // if string
+			
+			encode `by', gen(over2)
 		}
-		else {
-			tempvar tempov over2
-			egen   `over2' = group(`by')
+		else {  // if numeric
+			tempvar tempov 
+			egen   over2 = group(`by')
 			
 			if "`: value label `by''" != "" {
 				decode `by', gen(`tempov')		
-				labmask `over2', val(`tempov')
+				labmask over2, value(`tempov')
 			}
-			local by `over2' 
+			else {
+				labmask over2, value(`by')					
+			}
 		}	
 		
-	gen temp = `by'	
-	
+		local by over2
+		
 
 	decode `by', gen(_label)
-	
 	
 	drop if `yvar' == .
 	egen _x = group(`xvar')
@@ -114,9 +126,7 @@ preserve
 
 	bysort `by': egen _maxlast = max(_mark)
 	
-	
-	
-	
+
 	if "`dropother'" == "" {
 		
 		replace _maxlast = 2 if _maxlast==.
@@ -374,36 +384,49 @@ preserve
 
 	gen _blab = _label + labnum if _taglast==1
 
+
+	
+	
 	if "`wrap'" != "" {
-		gen _length = length(_blab) if _blab!= ""
-		summ _length, meanonly		
-		local _wraprounds = floor(`r(max)' / `wrap')
-		
-		forval i = 1 / `_wraprounds' {
-			local wraptag = `wrap' * `i'
-			replace _blab = substr(_blab, 1, `wraptag') + "`=char(10)'" + substr(_blab, `=`wraptag' + 1', .) if _length > `wraptag' & _blab!= ""
-		}
-		
-		drop _length
+		ren _blab _blab_temp
+		labsplit _blab_temp, wrap(`wrap') gen(_blab)
+		drop _blab_temp
 	}		
 	
 	
-	
 	if "`labsize'"   == "" local labsize   2.8
-	if "`xlabsize'"  == "" local xlabsize  2.5
-	if "`ylabsize'"  == "" local ylabsize  2.5
-	if "`xlabangle'" == "" local xlabangle 0
+	if "`labcolor'"  == "" local labcolor  black
+	if "`labangle'"  == "" local labangle  0
+	if "`labgap'"    == "" local labgap  1.5
+	
+	if "`labprop'" != "" {
+	
+		summ _sumvar if _taglast==1, meanonly
+		gen double _labwgt = `labsize' * (_sumvar / r(max))^`labscale' if _taglast==1
+			
+		levelsof _label, local(lvls)
+			
+		foreach x of local lvls {
+			summ _labwgt if _label=="`x'" & _taglast==1, meanonly
+			local labw = r(max)
+				
+			local labels `labels' (scatter _ymid `xvar' if _label=="`x'" & _taglast==1, msymbol(none) mlabel(_blab) mlabgap(`labgap') mlabsize(`labw') mlabpos(3) mlabcolor(`labcolor') mlabangle(`labangle'))
+		}
+	
+	}
+	else {
+		local labels (scatter _ymid `xvar' if _taglast==1, msymbol(none) mlabel(_blab) mlabgap(`labgap') mlabsize(`labsize') mlabpos(3) mlabcolor(`labcolor') mlabangle(`labangle'))
+	}	
+	
+	
 	
 
-	levelsof `xvar'
-	local xlist = "`r(levels)'"
-	
+
 	// draw
 	twoway ///
-		(scatter _ymid `xvar' if _taglast==1, mlabel(_blab) mlabpos(3) mlabsize(`labsize') mc(none) mlabgap(1.5)) ///
+		`labels' ///
 		`areas' ///
 		, ///
-		xlabel(`xlist', labsize(`xlabsize') angle(`xlabangle')) ///
 		ylabel(`ymin' `ymax', nolabels noticks nogrid) ///
 		yscale(noline) ///
 		xscale(noline range(`xrmin' `xrmax')) ///

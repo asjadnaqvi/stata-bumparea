@@ -1,21 +1,20 @@
 {smcl}
-{* 11Jun2024}{...}
+{* 21Oct2024}{...}
 {hi:help bumparea}{...}
-{right:{browse "https://github.com/asjadnaqvi/stata-bumparea":bumparea v1.31 (GitHub)}}
+{right:{browse "https://github.com/asjadnaqvi/stata-bumparea":bumparea v1.4 (GitHub)}}
 
 {hline}
 
-{title:bumparea}: A Stata package for bump area or ribbon plots. 
+{title:bumparea}: A Stata package for bump or ribbon plots. 
 
 
 {marker syntax}{title:Syntax}
 {p 8 15 2}
 
-{cmd:bumparea} {it:y x} {ifin}, {cmd:by}(varname) 
-		{cmd:[} {cmd:top}({it:num}) {cmdab:dropo:ther} {cmd:smooth}({it:num}) {cmd:palette}({it:str}) {cmd:labcond}({it:str}) {cmd:offset}({it:num}) {cmd:alpha}({it:num}) 
-		  {cmdab:lc:olor}({it:str}) {cmdab:lw:idth}({it:str}) {cmd:percent} {cmd:format}({it:fmt}) {cmdab:rec:enter}(mid|top|bot) {cmd:colorby}({it:name}) 
-          {cmd:colorvar}({it:var}) {cmdab:colo:ther}({it:str}) {cmd:wrap}({it:num}) *
-        {cmd:]}
+{cmd:bumparea} {it:y x} {ifin} {weight}, {cmd:by}(varname) 
+        {cmd:[} {cmd:top}({it:num}) {cmdab:dropo:ther} {cmd:smooth}({it:num}) {cmd:palette}({it:str}) {cmd:labcond}({it:str}) {cmd:offset}({it:num}) {cmd:alpha}({it:num}) {cmd:stat}({it:mean}|{it:sum}) 
+          {cmdab:lc:olor}({it:str}) {cmdab:lw:idth}({it:str}) {cmd:percent} {cmd:format}({it:fmt}) {cmdab:rec:enter}(mid|top|bot) {cmd:colorby}({it:name}) {cmd:colorvar}({it:var}) {cmdab:colo:ther}({it:str}) 
+          {cmd:wrap}({it:num}) {cmdab:labs:ize}({it:str}) {cmdab:labc:olor}({it:str}) {cmdab:laba:ngle}({it:str}) {cmdab:labg:ap}({it:str}) {cmd:labprop}  {cmd:labscale}({it:num}) * {cmd:]}
 
 
 {p 4 4 2}
@@ -28,12 +27,15 @@ The options are described as follows:
 {p2coldent : {opt bumparea y x, by(group)}}The command requires a numeric {it:y} variable and a numeric {it:x} variable. The x variable is usually a time variable.
 The {opt by()} variable defines the groupings.{p_end}
 
-{p2coldent : {opt top(num)}}The number of rows to show in the graph. The default option is {opt top(50)}. Non {opt top()} values are grouped in an "Others" category.{p_end}
+{p2coldent : {opt top(num)}}The number of rows to show in the graph. The default option is {opt top(10)}. Non {opt top()} values are grouped in the "Others" category.{p_end}
+
+{p2coldent : {opt stat(mean|sum)}}If there are multiple observations per {opt by()} variables, then by default the program take the sum by triggering {opt stat(sum)}.
+Even though these options is available, preparing the data beforehand is highly recommended.{{p_end}
 
 {p2coldent : {opt dropo:ther}}Drop the "Others" category from the graph and just show the {opt top()} categories.{p_end}
 
-{p2coldent : {opt smooth(num)}}The smoothing parameter that ranges from 1-8. The default value is {opt smooth(4)}. A value of 1 shows straight lines,
-while a value of 8 shows almost vertical jumps.{p_end}
+{p2coldent : {opt smooth(num)}}The smoothing parameter that ranges from 1-8. The default is {opt smooth(4)}. A value of 1 shows straight lines,
+while a value of 8 shows step-wise jumps.{p_end}
 
 {p2coldent : {opt palette(str)}}Color name is any named scheme defined in the {stata help colorpalette:colorpalette} package. Default is {stata colorpalette tableau:{it:tableau}}.{p_end}
 
@@ -44,9 +46,9 @@ order.{p_end}
 {p2coldent : {opt colorvar(var)}}Color by a predefined variable. Define a color variable that takes on values in increments of one. This is to fully control and customize the 
 colors assigned.{p_end}
 
-{p2coldent : {opt colo:ther(var)}}Color of the other category. Default is {opt colo(gs12)}}.{p_end}
+{p2coldent : {opt colo:ther(var)}}Color of the other category. Default is {opt colo(gs12)}.{p_end}
 
-{p2coldent : {opt alpha(num)}}The transparency of area fills. The default is {opt alpha(80)} for 80% transparency.{p_end}
+{p2coldent : {opt alpha(num)}}The transparency of area fills. Default is {opt alpha(80)} for 80% transparency.{p_end}
 
 {p2coldent : {opt offset(num)}}Extends the x-axis range to accommodate labels. The default value is {it:15} for 15% of {it:xmax-xmin}.{p_end}
 
@@ -61,15 +63,22 @@ or {opt rec:enter(bottom)}. For brevity, the following can be specified: {it:mid
 
 {p2coldent : {opt lc:olor(str)}}The line color of the area stroke. The default is {opt lc(white)}.{p_end}
 
-{p2coldent : {opt wrap(num)}}Wrap the labels after a number of characters. For example, {opt wrap(50)} will wrap labels every 50 characters.{p_end}
+{p2coldent : {opt wrap(num)}}Wrap the labels after a number of characters. Word boundaries are respected.{p_end}
 
-{p2coldent : {opt labs:ize(str)}}Size of the {opt by()} category labels. Default value is {opt labs(2.8)}.{p_end}
+{p2coldent : {opt labs:ize(str)}}Size of the ribbon labels. Default is {opt labs(2.8)}.{p_end}
 
-{p2coldent : {opt xlabs:ize(str)}}Size of the x-axis labels. Default value is {opt xlabs(2.5)}.{p_end}
+{p2coldent : {opt labc:olor(str)}}Color of the ribbon labels. Default is {opt labc(black)}.{p_end}
 
-{p2coldent : {opt xlaba:ngle(str)}}Angle of the x-axis labels. Default is {opt xlaba(0)} for zero degrees or horizontal orientation.{p_end}
+{p2coldent : {opt laba:ngle(str)}}Angle of the ribbon labels. Default is {opt laba(0)} for horizontal.{p_end}
 
-{p2coldent : {opt *}}All other standard twoway options.{p_end}
+{p2coldent : {opt labg:ap(str)}}Gap of the ribbon labels. Default is {opt labg(1.5)}.{p_end}
+
+{p2coldent : {opt labprop}}Make ribbon labels proportional to their relative value.{p_end}
+
+{p2coldent : {opt labscale(num)}}Scale factor of {opt labprop}. Default is {opt labscale(0.3333)}. Values closer to zero result in more exponential scaling, while values closer
+to one are almost linear scaling.{p_end}
+
+{p2coldent : {opt *}}All other standard twoway options not elsewhere specified.{p_end}
 
 {synoptline}
 {p2colreset}{...}
@@ -77,12 +86,12 @@ or {opt rec:enter(bottom)}. For brevity, the following can be specified: {it:mid
 
 {title:Dependencies}
 
-The {browse "http://repec.sowi.unibe.ch/stata/palettes/index.html":palette} package (Jann 2018, 2022) is required:
+Please make sure that you have the latest versions of the following packages installed:
 
 {stata ssc install palettes, replace}
 {stata ssc install colrspace, replace}
+{stata ssc install graphfunctions, replace}
 
-Even if you have these installed, it is highly recommended to check for updates: {stata ado update, update}
 
 {title:Examples}
 
@@ -93,8 +102,8 @@ See {browse "https://github.com/asjadnaqvi/stata-bumparea":GitHub}.
 
 {title:Package details}
 
-Version      : {bf:bumparea} v1.31
-This release : 11 Jun 2024
+Version      : {bf:bumparea} v1.4
+This release : 21 Oct 2024
 First release: 10 Apr 2023
 Repository   : {browse "https://github.com/asjadnaqvi/stata-bumparea":GitHub}
 Keywords     : Stata, graph, bump chart, ribbon plot
@@ -114,14 +123,14 @@ Please submit bugs, errors, feature requests on {browse "https://github.com/asja
 
 Suggested citation guidlines for this package:
 
-Naqvi, A. (2024). Stata package "bumparea" version 1.31. Release date 11 June 2024. https://github.com/asjadnaqvi/stata-bumparea.
+Naqvi, A. (2024). Stata package "bumparea" version 1.4. Release date 21 Oct 2024. https://github.com/asjadnaqvi/stata-bumparea.
 
 @software{bumparea,
    author = {Naqvi, Asjad},
    title = {Stata package ``bumparea''},
    url = {https://github.com/asjadnaqvi/stata-bumparea},
-   version = {1.31},
-   date = {2024-06-11}
+   version = {1.4},
+   date = {2024-10-21}
 }
 
 
@@ -135,7 +144,7 @@ Naqvi, A. (2024). Stata package "bumparea" version 1.31. Release date 11 June 20
 {title:Other visualization packages}
 
 {psee}
-    {helpb arcplot}, {helpb alluvial}, {helpb bimap}, {helpb bumparea}, {helpb bumpline}, {helpb circlebar}, {helpb circlepack}, {helpb clipgeo}, {helpb delaunay}, {helpb joyplot}, 
-	{helpb marimekko}, {helpb polarspike}, {helpb sankey}, {helpb schemepack}, {helpb spider}, {helpb streamplot}, {helpb sunburst}, {helpb treecluster}, {helpb treemap}, {helpb waffle}
-	
-or visit {browse "https://github.com/asjadnaqvi":GitHub} for detailed documentation and examples.		
+    {helpb arcplot}, {helpb alluvial}, {helpb bimap}, {helpb bumparea}, {helpb bumpline}, {helpb circlebar}, {helpb circlepack}, {helpb clipgeo}, {helpb delaunay}, {helpb graphfunctions}, {helpb joyplot}, 
+	{helpb marimekko}, {helpb polarspike}, {helpb sankey}, {helpb schemepack}, {helpb spider}, {helpb splinefit}, {helpb streamplot}, {helpb sunburst}, {helpb ternary}, {helpb treecluster}, {helpb treemap}, {helpb trimap}, {helpb waffle}
+
+or visit {browse "https://github.com/asjadnaqvi":GitHub}.	
