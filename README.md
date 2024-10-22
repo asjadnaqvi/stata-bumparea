@@ -67,7 +67,7 @@ See the help file `help bumparea` for details.
 
 The most basic use is as follows:
 
-```
+```stata
 bumparea y x, by(group)
 ```
 
@@ -104,7 +104,7 @@ Naqvi, A. (2024). Stata package "bumparea" version 1.4. Release date 21 October 
 
 Load the Stata dataset
 
-```
+```stata
 use "https://github.com/asjadnaqvi/stata-bumparea/blob/main/data/owid_emissions_reduced.dta?raw=true", clear
 drop if iso_code==""
 keep if year >= 1990
@@ -120,7 +120,7 @@ bumparea total_ghg year, by(country)
 <img src="/figures/bumparea1.png" width="100%">
 
 
-```
+```stata
 bumparea total_ghg year, by(country) top(10) ///
 	xsize(2) ysize(1) 
 ```
@@ -129,7 +129,8 @@ bumparea total_ghg year, by(country) top(10) ///
 
 
 ### percent
-```
+
+```stata
 bumparea total_ghg year, by(country) top(10) ///
 	percent labs(2) xsize(2) ysize(1) 	
 ```
@@ -152,7 +153,7 @@ bumparea total_ghg year, by(country) top(10) ///
 
 <img src="/figures/bumparea5.png" width="100%">
 
-```
+```stata
 bumparea total_ghg year, by(country) ///
 	top(12) dropother labs(2) xsize(2) ysize(1) 
 ```
@@ -161,14 +162,14 @@ bumparea total_ghg year, by(country) ///
 
 ### smooth
 
-```
+```stata
 bumparea total_ghg year, by(country) top(10) ///
 	smooth(1) dropother labs(2) xsize(2) ysize(1) 	
 ```
 
 <img src="/figures/bumparea7.png" width="100%">
 
-```
+```stata
 bumparea total_ghg year, by(country) top(10) ///
 	smooth(8) dropother labs(2) xsize(2) ysize(1) 	
 ```
@@ -177,14 +178,14 @@ bumparea total_ghg year, by(country) top(10) ///
 
 ### recenter
 
-```
+```stata
 bumparea total_ghg year, by(country) top(10) ///
 	recenter(top) dropother labs(2) xsize(2) ysize(1) 	
 ```
 
 <img src="/figures/bumparea9.png" width="100%">
 
-```
+```stata
 bumparea total_ghg year, by(country) top(10) ///
 	recenter(bot) dropother labs(2) xsize(2) ysize(1) 		
 ```
@@ -195,7 +196,7 @@ bumparea total_ghg year, by(country) top(10) ///
 
 ### alpha and lines
 
-```
+```stata
 bumparea total_ghg year, by(country) top(10) ///
 	lc(black) lw(0.03) dropother labs(2) xsize(2) ysize(1) 	
 ```
@@ -204,28 +205,28 @@ bumparea total_ghg year, by(country) top(10) ///
 
 ### colors
 
-```
+```stata
 bumparea total_ghg year, by(country) top(10) ///
 	lc(black) lw(0.03) palette(reds, reverse) dropother labs(2) xsize(2) ysize(1) 	
 ```
 
 <img src="/figures/bumparea12.png" width="100%">
 
-```
+```stata
 bumparea total_ghg year, by(country) top(10) ///
 	lc(black) lw(0.03) palette(viridis) dropother labs(2) xsize(2) ysize(1) 
 ```
 
 <img src="/figures/bumparea13.png" width="100%">
 
-```
+```stata
 bumparea total_ghg year, by(country) top(10) ///
 	lc(black) lw(0.03) palette(CET C6) alpha(100) dropother labs(2) xsize(2) ysize(1) 			
 ```
 
 <img src="/figures/bumparea14.png" width="100%">
 
-```	
+```stata
 bumparea total_ghg year, by(country) top(10) ///
 	lc(black) lw(0.03) palette(CET C6) alpha(50) dropother labs(2) xsize(2) ysize(1) 		
 ```
@@ -234,7 +235,7 @@ bumparea total_ghg year, by(country) top(10) ///
 
 ### all together
 
-```
+```stata
 bumparea total_ghg year, by(country) smooth(6) palette(CET L20) labs(2) ///
 	top(10) dropother recenter(mid) alpha(90) lw(0.15) xlabel(1990(1)2019, angle(45)) ///
 	title("Top 10 countries by annual GHG emissions", size(6)) ///
@@ -247,7 +248,7 @@ bumparea total_ghg year, by(country) smooth(6) palette(CET L20) labs(2) ///
 
 ### custom x axis
 
-```
+```stata
 use "https://github.com/asjadnaqvi/stata-bumparea/blob/main/data/owid_emissions_reduced.dta?raw=true", clear
 drop if iso_code==""
 keep if inlist(year, 1990, 1993, 1997, 2000, 2005, 2007, 2010, 2014, 2017, 2019)
@@ -264,28 +265,28 @@ bumparea total_ghg year, by(country) smooth(8) palette(CET L08) labs(2) ///
 
 ### v1.2 options 
 
-```
+```stata
 bumparea total_ghg year, by(country) top(10) ///
 			xsize(2) ysize(1) 		
 ```
 
 <img src="/figures/bumparea18.png" width="100%">
 
-```
+```stata
 bumparea total_ghg year, by(country) top(10) colother(gs6) ///
 			xsize(2) ysize(1) 		
 ```
 
 <img src="/figures/bumparea19.png" width="100%">
 
-```
+```stata
 bumparea total_ghg year, by(country) top(10) colorby(name) ///
 			xsize(2) ysize(1		
 ```
 
 <img src="/figures/bumparea20.png" width="100%">
 
-```
+```stata
 cap drop cats
 gen cats = .
 replace cats = 1 if inlist(country, "Indonesia", "Japan")
@@ -304,20 +305,34 @@ bumparea total_ghg year, by(country) top(10) colorvar(cats) ///
 ### v1.4 options 
 
 
-```
+```stata
 bumparea total_ghg year, by(country) top(10) dropother xsize(2) ysize(1) format(%8.1f) offset(10) labprop labc(red) laba(45) ///
 		xlabel(1990(1)2019, labsize(2) angle(45) )	
 ```
 
 <img src="/figures/bumparea22.png" width="100%">
 
-```
+```stata
 bumparea total_ghg year [aw = gdp], by(country) top(10) dropother xsize(2) ysize(1) format(%10.0fc) offset(10) labprop  ///
 		xlabel(1990(1)2018, labsize(2) angle(90) )
 ```
 
 <img src="/figures/bumparea23.png" width="100%">
 
+
+```stata
+levelsof year if !missing(gdp)
+
+
+bumparea total_ghg year [aw = gdp], by(country) wrap(20) dropother lc(black) labprop labc(white)  ///	
+smooth(8) top(15) palette(CET L20, reverse)  ///
+	lw(0.1) xlabel("`r(levels)'", angle(90) labsize(2)) offset(10) labsize(2.6)  ///
+	title("{fontface Merriweather Bold:Top 30 countries by annual GHG emissions (GDP weighted)}",  size(6)) ///
+			note("Source: Our World in Data. bumpline package.", size(1.6)) ///
+			xsize(3) ysize(1) scheme(neon)
+```
+
+<img src="/figures/bumparea24.png" width="100%">
 
 ## Feedback
 
